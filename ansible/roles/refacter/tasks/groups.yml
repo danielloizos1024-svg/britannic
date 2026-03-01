@@ -1,0 +1,42 @@
+# ========================================
+# File:     
+# Created:   
+# Author: Daniel Loizos
+# Email: daniel.loizos@gmail.com
+# Description: 
+#
+# ========================================
+- name: create 'sudo' group on debian-based hosts
+  group:
+    name: sudo 
+    state: present
+  when: ansible_facts['os_family'] == "Debian"
+  
+- name: create NOPASSWD file for sudo
+  lineinfile:
+    path: /etc/sudoers.d/sudo
+    create: yes
+    line: '%sudo ALL=(ALL) NOPASSWD:ALL'
+    owner: root
+    group: root
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: create 'wheel' group on rhel-based hosts
+  group:
+    name: wheel
+    state: present
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: create NOPASSWD file for wheel
+  lineinfile:
+    path: /etc/sudoers.d/wheel
+    create: yes
+    line: '%wheel ALL=(ALL) NOPASSWD:ALL'
+    owner: root
+    group: root
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: create 'users' group on all servers
+  group:
+    name: users
+    state: present 

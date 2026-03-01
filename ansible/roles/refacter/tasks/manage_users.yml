@@ -1,0 +1,72 @@
+# ========================================
+# File:     
+# Created:   
+# Author: Daniel Loizos
+# Email: daniel.loizos@gmail.com
+# Description: 
+#
+# ========================================
+
+- name: add admin user to debian-based servers
+  user:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    shell: /bin/bash
+    create_home: yes
+    groups: sudo
+    append: true
+  when: 
+    - item.state == "present"
+    - item.admin == "yes" 
+    - ansible_facts['os_family'] == "Debian" 
+  loop: "{{ user }}"
+
+- name: add admin user to rhel-based servers
+  user:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    shell: /bin/bash
+    create_home: yes
+    groups: wheel
+    append: true
+  when: 
+    - item.state == "present" 
+    - item.admin == "yes"  
+    - ansible_facts['os_family'] == "RedHat" 
+  loop: "{{ user }}"
+
+- name: add standard user to all servers
+  user:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    shell: /bin/bash
+    create_home: yes
+    groups: users
+    append: true
+  when: 
+    - item.state == "present" 
+    - item.admin == "no"  
+  loop: "{{ user }}"
+
+- name: install authorized_keys file
+  lineinfile:
+    path: "/home/{{ item.name }}/.ssh/authorized_keys"
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    line: "{{ item.pubkey }}"
+    mode: '0600'
+    create: yes
+  loop: "{{ user }}"
+  ignore_errors: yes
+
+- name: remove selected user, delete home
+  user:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    force: yes
+  when: 
+    - item.state == "absent" 
+  loop: "{{ user }}"
+
+
+

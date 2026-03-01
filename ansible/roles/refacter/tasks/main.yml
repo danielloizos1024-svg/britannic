@@ -1,0 +1,5 @@
+---
+# tasks file for refacter
+- import_tasks: tasks/groups.yml
+- import_tasks: tasks/manage_users.yml
+

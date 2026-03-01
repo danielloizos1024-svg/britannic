@@ -1,0 +1,18 @@
+# ========================================
+# File:     
+# Created:   
+# Author: Daniel Loizos
+# Email: daniel.loizos@gmail.com
+# Description: 
+#
+# ========================================
+
+- name: bootstrap users
+  hosts: all
+  roles:
+  - refacter
+  vars:
+    user:
+    - { name: "admin", state: "present", admin: "yes", pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJBCxQlhNwgYST8JzpPKKjczgEVtL+rPC824o2gghOMN dpl@redfern01.dlws.io" }
+    - { name: "standard", state: "present", admin: "no", pubkey: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJBCxQlhNwgYST8JzpPKKjczgEVtL+rPC824o2gghOMN dpl@redfern01.dlws.io" }
+

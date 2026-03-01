@@ -66,31 +66,37 @@ ansible-playbook refacter.yml -i path/to/inventory
 2. the role creates groups based on OS, which are detected using Ansible facts. Admin users can be defined, as described above:
   a) the 'wheel' group for RHEL servers. A sudoers.d/wheel file is created giving NOPASSWD acces
   b) 'sudo' for debian servers.  A sudoers.d/sudo file is created giving NOPASSWD acces
-
 3. A 'users' group for non-admins is also given, by default
-
 4. a README is included with the role too.
 
 
 ## Terraform
 I did not get as far as I would have liked with Terraform. My terraform scripts can
-* pull grafana and prometheus images, build a network and build containers
-* add an organization to Grafata, create a folder, create (but not populate a dashboard)
+* pull grafana and prometheus docker images, build a network and build both containers
+* networking works
+* add an organization to Grafana container, create a folder, create (but not populate a dashboard)
 * add prometheus as a data source.
 
+I was unable to create or use someone else's dashboard, or create alerts
+
+
+### In the repo
 see the terraform folder in my repo for the following files:
 * containers.tf
 * images.tf
 * network.tf
 * provider.tf
 
-To build the environment
-* yum -y install epel-release; yum -y install terraform
+### To build the environment
 * copy files to server
-* terraform init
-* terraform apply, _twice_
+```
+yum -y install epel-release
+yum -y install terraform
+terraform init
+terraform apply, _twice_
+```
 
-### known bug
+### Known bug
 With more time and research I think I could figure out how to pause terraform apply, in order to give the whole process time to apply. The bug is that it takes terraform apply two attempts to get the environment up and running
 
 ```
@@ -112,8 +118,3 @@ With more time and research I think I could figure out how to pause terraform ap
 ╵
 [dpl1@terraform01 ~]$
 ```
-
-
-
-
-

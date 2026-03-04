@@ -1,0 +1,7 @@
+TERM=xterm-256color
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+0.15.30,45 * * * * /home/dpl1/check_passwd.sh
+
+
